@@ -9,7 +9,7 @@ namespace api.Mappers
 {
     public static class StockMapperExtensions
     {
-        public static StockDto toStockDto(this Stock stock)
+        public static StockDto ToStockDto(this Stock stock)
         {
             return new StockDto
             {
@@ -20,6 +20,18 @@ namespace api.Mappers
                 LastDiv = stock.LastDiv,
                 Industy = stock.Industy,
                 MarketCap = stock.MarketCap
+            };
+        }
+        public static Stock ToStockFromCreateStockRequest(this CreateStockRequest stockDto)
+        {
+            return new Stock
+            {
+                Symbol = stockDto.Symbol,
+                CompanyName = stockDto.CompanyName,
+                Purchase = stockDto.Purchase,
+                LastDiv = stockDto.LastDiv,
+                Industy = stockDto.Industy,
+                MarketCap = stockDto.MarketCap
             };
         }
     }
