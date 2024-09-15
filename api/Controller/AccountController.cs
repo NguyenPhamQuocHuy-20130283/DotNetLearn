@@ -23,6 +23,33 @@ namespace api.Controllers
             _userManager = userManager;
             _tokenService = tokenService;
         }
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        {
+            try
+            {
+                var user = await _userManager.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.UserName);
+                if (user == null)
+                    return Unauthorized("Invalid username");
+
+                var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+                if (!result)
+                    return Unauthorized("Invalid password");
+
+                return Ok(
+                    new NewUserDto
+                    {
+                        UserName = user.UserName,
+                        Email = user.Email,
+                        Token = _tokenService.CreateToken(user)
+                    }
+                );
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+        }
 
 
         [HttpPost("register")]
