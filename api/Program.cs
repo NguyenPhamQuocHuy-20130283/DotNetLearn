@@ -2,6 +2,7 @@ using api.DB;
 using api.Interfaces;
 using api.models;
 using api.Repositories;
+using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -59,6 +60,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<IStockRepo, StockRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
