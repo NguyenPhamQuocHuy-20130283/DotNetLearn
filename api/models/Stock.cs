@@ -7,6 +7,7 @@ using System.Xml;
 
 namespace api.models
 {
+    [Table("Stocks")]
     public class Stock
     {
         public int Id { get; set; }
@@ -20,5 +21,7 @@ namespace api.models
         public string Industy { get; set; } = "";
         public long MarketCap { get; set; }
         public List<Comment> Comments { get; set; } = [];
+        public List<Portfolio> Portfolios { get; set; } = [];
+
     }
 }

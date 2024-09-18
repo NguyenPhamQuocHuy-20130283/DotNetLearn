@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace api.Controllers
+namespace api.Controller
 {
     [Route("api/account")]
     [ApiController]
@@ -28,13 +28,18 @@ namespace api.Controllers
         {
             try
             {
-                var user = await _userManager.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.UserName);
-                if (user == null)
-                    return Unauthorized("Invalid username");
+                var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.UserName);
+                if (user != null)
+                {
+                    var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+                    if (!result)
+                        return Unauthorized("Invalid username/password");
+                }
+                else
+                {
+                    return Unauthorized("Invalid username/password");
+                }
 
-                var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
-                if (!result)
-                    return Unauthorized("Invalid password");
 
                 return Ok(
                     new NewUserDto
